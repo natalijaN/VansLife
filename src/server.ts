@@ -1,14 +1,14 @@
 import { createServer, Model } from "miragejs"
 
-    type Van = {
-        id: string;
-        name: string;
-        price: number;
-        description: string;
-        imageUrl: string;
-        type: string;
-        hostId: string;
-    };
+type Van = {
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    imageUrl: string;
+    type: string;
+    hostId: string;
+  };
 
     export function makeServer() {
 
@@ -41,16 +41,16 @@ import { createServer, Model } from "miragejs"
       });
 
       this.get("/host/vans", (schema) => {
-        // Hard-code the hostId for now
-        return schema.all("van").models.filter(van => van.hostId === '123'); 
-    });
+        return schema.all("van").models.filter((van: Partial<Van>) => van.hostId === "123");
+      });
 
-
-    this.get("/host/vans/:id", (schema, request) => {
-        // Hard-code the hostId for now
-        const id = request.params.id
-        return schema.vans.where({ id, hostId: "123" })
-    })
+      this.get("/host/vans/:id", (schema, request) => {
+        const id = request.params.id;
+        const vans = schema.all("van").models.filter(
+          (van: Partial<Van>) => van.id === id && van.hostId === "123"
+        );
+        return { vans };
+      });
 
     }
 })
